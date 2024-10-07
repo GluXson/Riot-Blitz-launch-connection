@@ -1,15 +1,11 @@
 Set fso = CreateObject("Scripting.FileSystemObject")
-Set objShell = WScript.CreateObject("WScript.Shell")
 
-currentFolder = fso.GetParentFolderName(WScript.ScriptFullName)
-
-If fso.FolderExists(currentFolder) Then
-    fso.DeleteFolder currentFolder, True
+autostartPath = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\run_Blitz-Riot.vbs")
+If fso.FileExists(autostartPath) Then
+    fso.DeleteFile autostartPath
 End If
 
-startupFolder = objShell.SpecialFolders("Startup")
-fileInStartup = startupFolder & "\run_Blitz-Riot.vbs"
+currentFolder = fso.GetAbsolutePathName(".")
+On Error Resume Next
+fso.DeleteFolder currentFolder, True
 
-If fso.FileExists(fileInStartup) Then
-    fso.DeleteFile fileInStartup, True
-End If
